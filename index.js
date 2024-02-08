@@ -1,12 +1,27 @@
-const express = require('express');
+import {db_pw} from './secrets'
 
-const app = express();
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const URI = `mongodb+srv://andrewbarker96:${db_pw}@cluster0.5646wb0.mongodb.net/?retryWrites=true&w=majority&ssl=true`;
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(URI, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
-
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
