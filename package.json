@@ -3,21 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "devStart": "nodemon sever.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewbarker96/nodejs-expressjs.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrewbarker96/nodejs-expressjs/issues"
+  },
+  "homepage": "https://github.com/andrewbarker96/nodejs-expressjs#readme",
   "dependencies": {
-    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.1",
-    "mongose": "^0.0.2-security",
+    "nodemon": "^3.0.3",
     "react": "^18.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.3"
   }
 }
