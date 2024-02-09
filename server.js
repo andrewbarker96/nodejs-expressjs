@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import {db_user, db_pw} from './secrets/dbConnection.js';
 import Product from './models/productModel.js';
+import Account from './models/user.js';
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.get('/product', async (req, res) => {
     const products = await Product.find();
     res.send(products);
   });
-  
+
 app.post('/product', async(req, res) => {
     try {
         const product = await Product.create(req.body);
@@ -28,6 +29,23 @@ app.post('/product', async(req, res) => {
         res.status(500).json({error: error.message})
     }
 });
+
+app.get('/account', async (req, res) => {
+    const accounts = await Account.find();
+    res.send(accounts);
+  });  
+
+app.post('/account', async(req, res) => {
+    try {
+        const account = await Account.create(req.body);
+        res.status(200).json(account);
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({error: error.message})
+    }
+});
+
 
 mongoose.set("strictQuery", false);
 mongoose.connect(`mongodb+srv://${db_user}:${db_pw}@cluster0.5646wb0.mongodb.net/?retryWrites=true&w=majority`)
