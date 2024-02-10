@@ -7,42 +7,67 @@ import Account from './models/user.js';
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 //routes
 
 app.get('/', (_, res) => {
-    res.send('Hello NODE API');
+    res.send('Hello World!');
 });
 
-app.get('/product', async (req, res) => {
-    const products = await Product.find();
-    res.send(products);
-  });
+app.get('/account', async (_, res) => {
+    const accounts = await Account.find();
+    res.send(accounts);
+});
 
-app.post('/product', async(req, res) => {
+app.get('/account/:id', async (req, res) => {
     try {
-        const product = await Product.create(req.body);
-        res.status(200).json(product);
-
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).json({error: error.message})
+        const { id } = req.params;
+        const account = await Account.findById(id);
+        res.status(200).json(account);
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
     }
 });
 
-app.get('/account', async (req, res) => {
-    const accounts = await Account.find();
-    res.send(accounts);
-  });  
-
-app.post('/account', async(req, res) => {
+app.post('/account', async (req, res) => {
     try {
         const account = await Account.create(req.body);
         res.status(200).json(account);
 
     } catch (error) {
-        console.log(error.message)
-        res.status(500).json({error: error.message})
+        console.log(error.message);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.put('/account/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const account = await Account.findByIdAndUpdate(id, req.body)
+        if (!account){
+            return res.status(404).json({error: 'Account not found'});
+        }
+        const updatedAccount = await Account.findById(id);
+        res.status(200).json(updatedAccount);
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.delete('/account/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const account = await Account.findByIdAndDelete(id);
+        if (!account){
+            return res.status(404).json({error: 'Account not found'});
+        }
+        res.status(200).json(account);
+    }
+    catch (error) {
+        res.status(500).json({error: error.message});
     }
 });
 
